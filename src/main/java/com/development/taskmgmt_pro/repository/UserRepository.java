@@ -1,6 +1,5 @@
 package com.development.taskmgmt_pro.repository;
 
-import com.development.taskmgmt_pro.model.Task;
 import com.development.taskmgmt_pro.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,12 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAll(Pageable pageable);
 
-    List<Task> findByUserId(Long userId);
+    Optional<User> findByUserId(Long userId);
 
     @Query("SELECT u FROM User u WHERE u.userName LIKE %:keyword%")
     List<User> searchUsersByUserName(@Param("keyword") String keyword);
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying @Query("UPDATE User SET emailId = :emailId WHERE userId = :userId")
     int updateUserEmailIdByUserId(@Param("emailId") String emailId, @Param("userId") Long userId);
 
-    //save(User user);
+    //saveUser(User user);
     //Optional<User> findById(Long userId);
     //void deleteById(userId);
     //void deleteByUsername(String userName);
