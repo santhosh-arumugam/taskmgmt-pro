@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Page<Task> findAll(Pageable pageable);
@@ -21,11 +23,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM Task T JOIN Project P WHERE T.projectId = P.projectId AND P.projectId = :projectId AND T.status LIKE %:status%", nativeQuery = true)
     int countTasksByProjectId(@Param("projectId") Long projectId, @Param("status") String status);
-
-    //int save(Task task);
-    //Optional<Task> findById(Long taskId);
-    //List<Task> findByTitle(String title);
-    //void delete(Long taskId);
-    //List<Task> findAllTaskByStatus(String status);
 
 }

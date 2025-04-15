@@ -17,14 +17,12 @@ public class UserRepositoryTest {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserRepositoryTest(UserRepository userRepository)
-    {
+    public UserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Test
-    void testInsertUser() {
-
+    void testSaveUser() {
         //Given
         User user = new User();
         user.setUserName("Santhosh");
@@ -34,13 +32,13 @@ public class UserRepositoryTest {
         User savedUser = userRepository.save(user);
 
         //Then
-        assertNotNull(savedUser.getUserId(), "User ID should be generated");
+        assertNotNull(savedUser.getUserId(), "User should be available");
         assertEquals("Santhosh", savedUser.getUserName(), "Username should match");
         assertEquals("santhosh@gmail.com", savedUser.getEmailId(), "email ID should match");
 
         //Verify in database
-        Optional<User> found = userRepository.findByUserId(savedUser.getUserId());
-        assertTrue(found.isPresent(), "UserId should present");
+        Optional<User> found = userRepository.findById(savedUser.getUserId());
+        assertTrue(found.isPresent(), "User should be present in DB");
         assertEquals("Santhosh", found.get().getUserName());
         assertEquals("santhosh@gmail.com", found.get().getEmailId());
 

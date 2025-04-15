@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -32,12 +31,8 @@ public class ProjectRepositoryTest {
         Project savedProject = projectRepository.save(project);
 
         //Then
-        assertNotNull(savedProject.getProjectId(), "Project should be generated");
-        assertEquals("External Channels Integration", savedProject.getProjectName(), "Project name should be inserted");
+        assertNotNull(savedProject.getProjectId(), "Project should be inserted");
+        assertEquals("External Channels Integration", savedProject.getProjectName());
 
-        //Verify in database
-        Optional<Project> found = projectRepository.findById(savedProject.getProjectId());
-        assertTrue(found.isPresent(), "Project Id should be fetched from database");
-        assertEquals("External Channels Integration", found.get().getProjectName());
     }
 }

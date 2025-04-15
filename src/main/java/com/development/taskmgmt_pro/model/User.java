@@ -3,9 +3,11 @@ package com.development.taskmgmt_pro.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,5 +30,5 @@ public class User {
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Task> task;
+    private List<Task> tasks = new ArrayList<>();
 }

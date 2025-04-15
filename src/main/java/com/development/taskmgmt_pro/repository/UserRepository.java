@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAll(Pageable pageable);
@@ -25,12 +27,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying @Query("UPDATE User SET emailId = :emailId WHERE userId = :userId")
     int updateUserEmailIdByUserId(@Param("emailId") String emailId, @Param("userId") Long userId);
-
-    //saveUser(User user);
-    //Optional<User> findById(Long userId);
-    //void deleteById(userId);
-    //void deleteByUsername(String userName);
-    //Optional<User> findByUserName(String userName);
-    //Optional<User> findByEmailID(String emailId);
-    //List<User> findByEmailID(String emailId);
 }

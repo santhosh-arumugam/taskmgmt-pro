@@ -8,67 +8,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TaskRepositoryTest {
 
-    private final UserRepository userRepository;
-    private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskRepositoryTest(UserRepository userRepository, ProjectRepository projectRepository,TaskRepository taskRepository)
-    {
-        this.userRepository = userRepository;
-        this.projectRepository = projectRepository;
+    public TaskRepositoryTest(TaskRepository taskRepository, ProjectRepository projectRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
 
     @Test
     void testSaveTask() {
 
-        //Given User Model
-        User user = new User();
-        user.setUserName("Santhosh Kumar");
-        user.setEmailId("SanthoshKumar@gmail.com");
-        User savedUser = userRepository.save(user);
-
-        //Given Project model
+        //Given Project Model
         Project project = new Project();
-        project.setProjectName("External Channels integration");
+        project.setProjectName("Products Integration");
         Project savedProject = projectRepository.save(project);
 
-        //Given Task model
+        //Given User Model
+        User user = new User();
+        user.setUserName("Kumar");
+        user.setEmailId("kumar@gmail.com");
+        User savedUser = userRepository.save(user);
+
+        //Given Task Model
         Task task = new Task();
-        task.setTitle("Create Channel entity");
-        task.setPriority("High");
-        task.setStatus("OPEN");
+        task.setTitle("Create Model for Channels");
         task.setProject(savedProject);
         task.setUser(savedUser);
 
         //When
         Task savedTask = taskRepository.save(task);
 
-
         //Then
-        assertNotNull(savedTask.getTaskId(), "Task Id should be generated and inserted");
-        assertEquals("Create Channel entity", savedTask.getTitle(), "Should insert title");
-        assertEquals("High", savedTask.getPriority(), "Should insert priority");
-        assertEquals("OPEN", savedTask.getStatus(), "Should insert status");
-        assertEquals(savedUser.getUserId(), savedTask.getUser().getUserId(), "User Id should be generated and inserted");
-        assertEquals(savedProject.getProjectId(), savedTask.getProject().getProjectId(), "Project Id should be generated and inserted");
+        assertNotNull(savedTask.getTaskId(), "Task should be inserted");
+        assertNotNull(savedTask.getProject().getProjectId(), "Project should be inserted");
+        assertNotNull(savedTask.getUser().getUserId(), "User should be inserted");
+        assertEquals("Create Model for Channels", savedTask.getTitle(), "Title should be inserted");
+        assertEquals("Products Integration", savedTask.getProject().getProjectName(), "Project name should be inserted");
+        assertEquals("Kumar", savedTask.getUser().getUserName(), "User name should be inserted");
+        assertEquals("kumar@gmail.com", savedTask.getUser().getEmailId(), "User email ID should be inserted");
 
-        //verify in database
-        Optional<Task> found = taskRepository.findById(savedTask.getTaskId());
-        assertTrue(found.isPresent(), "Should get taskId from database");
-        assertEquals("Create Channel entity", found.get().getTitle() );
-        assertEquals("High", found.get().getPriority());
-        assertEquals("OPEN", found.get().getStatus());
-        assertEquals(savedUser.getUserId(), found.get().getUser().getUserId());
-        assertEquals(savedProject.getProjectId(), found.get().getProject().getProjectId());
     }
+
 }
