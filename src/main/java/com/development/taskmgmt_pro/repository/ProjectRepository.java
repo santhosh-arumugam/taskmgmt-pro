@@ -7,11 +7,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByProjectStatus(String projectStatus);
+
+    Optional<Project> findByProjectName(String projectName);
 
     @Query("SELECT p FROM Project p WHERE p.projectName LIKE %:keyword%")
     List<Project> searchProjectsByProjectName(@Param("keyword") String keyword);
