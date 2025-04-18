@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class CreateProjectDTO {
 
-    @NotBlank(message = "Project name should not be blank")
+    @NotBlank(message = "Project name cannot be blank")
     private String projectName;
 
 }

@@ -30,7 +30,5 @@ public class ProjectService {
         projectResponseDTO.setProjectId(savedProject.getProjectId());
         projectResponseDTO.setProjectName(savedProject.getProjectName());
         return projectResponseDTO;
-
-
     }
 }

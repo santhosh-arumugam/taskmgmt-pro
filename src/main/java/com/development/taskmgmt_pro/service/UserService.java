@@ -23,16 +23,18 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO createUser(CreateUserDTO dto) {
-        Optional<User> existingUser = userRepository.findByUserName(dto.getUserName());
-        if (existingUser.isPresent()) throw new DuplicateUserException("Username already exists");
 
-        Optional<User> existingUserEmailId = userRepository.findByEmailId(dto.getEmailId());
-        if (existingUserEmailId.isPresent()) throw new DuplicateUserException("User email ID already exists");
+        if (userRepository.findByUserName(dto.getUserName()).isPresent()) {
+            throw new DuplicateUserException("Username already exists");
+        }
+
+        if (userRepository.findByEmailId(dto.getEmailId()).isPresent()) {
+            throw new DuplicateUserException("User email ID already exists");
+        }
 
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmailId(dto.getEmailId());
-
         User savedUser = userRepository.save(user);
 
         return new UserResponseDTO(savedUser.getUserId(), savedUser.getUserName(), savedUser.getEmailId());
