@@ -1,5 +1,6 @@
 package com.development.taskmgmt_pro.dto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,4 +20,12 @@ public class CreateTaskDTO {
 
     @NotNull(message = "UserID is required")
     private Long userId;
+
+    private String description;
+
+    @Pattern(regexp = "^(LOW|MEDIUM|HIGH)?$", message = "Task Priority must be LOW, MEDIUM, HIGH or Null")
+    private String priority;
+
+    @Pattern(regexp = "^(OPEN|IN_PROGRESS|DONE)?$", message = "Task Status must be OPEN, IN_PROGRESS, DONE or Null")
+    private String status;
 }

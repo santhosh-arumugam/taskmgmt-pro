@@ -1,5 +1,6 @@
 package com.development.taskmgmt_pro.dto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,11 @@ public class CreateUserDTO {
     @NotBlank(message = "Username cannot be empty")
     private String userName;
 
-    @Email(message = "Invalid emailID format")
+    @Email(message = "Invalid emailID format", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private String emailId;
 
+    private String fullName;
+
+    @Pattern(regexp = "^(MANAGER|DEVELOPER|PRODUCT_OWNER|TESTER)?$", message = "Job role must be MANAGER, DEVELOPER, PRODUCT_OWNER, TESTER  or null")
+    private String jobRole;
 }

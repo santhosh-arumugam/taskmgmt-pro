@@ -44,18 +44,11 @@ public class TaskService {
             throw new DuplicateTaskException("Task Title already exists");
         }
 
-//        Task task = new Task();
         Task task = taskMapper.toEntity(dto);
         task.setProject(project);
         task.setUser(user);
-//        task.setTitle(dto.getTitle());
-
-
 
         Task savedTask = taskRepository.save(task);
-
-
-
         return taskMapper.toDto(savedTask);
     }
 }

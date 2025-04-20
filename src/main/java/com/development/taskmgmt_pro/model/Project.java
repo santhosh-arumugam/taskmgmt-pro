@@ -1,5 +1,6 @@
 package com.development.taskmgmt_pro.model;
 
+import com.development.taskmgmt_pro.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,12 +26,11 @@ public class Project {
     private String description;
 
     private LocalDate startDate;
-
     private LocalDate endDate;
 
-    private String projectStatus;
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus projectStatus;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
-
 }

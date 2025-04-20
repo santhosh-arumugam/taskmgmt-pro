@@ -1,7 +1,12 @@
 package com.development.taskmgmt_pro.model;
 
+import com.development.taskmgmt_pro.enums.TaskPriority;
+import com.development.taskmgmt_pro.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDate;
 
 @Entity
@@ -9,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
 
     @Id
@@ -20,10 +26,14 @@ public class Task {
 
     private String description;
 
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
