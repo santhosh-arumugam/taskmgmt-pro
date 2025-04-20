@@ -3,6 +3,7 @@ package com.development.taskmgmt_pro.service;
 import com.development.taskmgmt_pro.dto.CreateUserDTO;
 import com.development.taskmgmt_pro.dto.UserResponseDTO;
 import com.development.taskmgmt_pro.exception.DuplicateUserException;
+import com.development.taskmgmt_pro.mapper.UserMapper;
 import com.development.taskmgmt_pro.model.User;
 import com.development.taskmgmt_pro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -31,13 +34,7 @@ public class UserService {
         if (userRepository.findByEmailId(dto.getEmailId()).isPresent()) {
             throw new DuplicateUserException("User email ID already exists");
         }
-
-        User user = new User();
-        user.setUserName(dto.getUserName());
-        user.setEmailId(dto.getEmailId());
-        User savedUser = userRepository.save(user);
-
-        return new UserResponseDTO(savedUser.getUserId(), savedUser.getUserName(), savedUser.getEmailId());
-
+        User savedUser = userRepository.save(userMapper.toEntity(dto));
+        return userMapper.toDto(savedUser);
     }
 }

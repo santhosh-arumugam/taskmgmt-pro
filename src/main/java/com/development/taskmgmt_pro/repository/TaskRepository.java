@@ -9,12 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Page<Task> findAll(Pageable pageable);
 
+    Optional<Task> findByTitle(String title);
     @Query(value = "SELECT * FROM Task WHERE status LIKE %:keyword%", nativeQuery = true)
     List<Task> searchTasksByStatus(@Param("keyword") String status);
 
