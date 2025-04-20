@@ -25,22 +25,22 @@ public class UserRepositoryTest {
     void testSaveUser() {
         //Given
         User user = new User();
-        user.setUserName("Santhosh");
-        user.setEmailId("santhosh@gmail.com");
+        user.setUserName("Santhosh5");
+        user.setEmailId("santhosh5@gmail.com");
 
         //When
         User savedUser = userRepository.save(user);
 
         //Then
         assertNotNull(savedUser.getUserId(), "User should be available");
-        assertEquals("SanthoshKumar", savedUser.getUserName(), "Username should match");
-        assertEquals("santhoshKumar@gmail.com", savedUser.getEmailId(), "email ID should match");
+        assertEquals("Santhosh5", savedUser.getUserName(), "Username should match");
+        assertEquals("santhosh5@gmail.com", savedUser.getEmailId(), "email ID should match");
 
         //Verify in database
         Optional<User> found = userRepository.findById(savedUser.getUserId());
         assertTrue(found.isPresent(), "User should be present in DB");
-        assertEquals("SanthoshKumar", found.get().getUserName());
-        assertEquals("santhoshKumar@gmail.com", found.get().getEmailId());
+        assertEquals("Santhosh5", found.get().getUserName());
+        assertEquals("santhosh5@gmail.com", found.get().getEmailId());
 
     }
 }
