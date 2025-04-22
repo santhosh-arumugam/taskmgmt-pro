@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,6 +32,20 @@ public class GlobalExceptionHandler {
                         "value", String.valueOf(error.getRejectedValue())))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(errorResponse(HttpStatus.BAD_REQUEST, "Validation failed", errors, request.getRequestURI()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        logger.warn("Invalid parameter type for {} : {}", request.getRequestURI(), ex.getMessage());
+        String message = String.format("Invalid value '%s' for parameter '%s'. Expected type: %s",
+                ex.getValue(), ex.getName(), ex.getRequiredType().getSimpleName());
+        return new ResponseEntity<>(errorResponse(HttpStatus.BAD_REQUEST, message, null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+        logger.warn("Invalid argument for {} : {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateUserException.class)
@@ -68,5 +83,11 @@ public class GlobalExceptionHandler {
             response.put("errors", errors);
         }
         return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleException(Exception ex, HttpServletRequest request) {
+        logger.error("Unexcepted error at {} : {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null, request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
