@@ -48,6 +48,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidSortException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidSortException(InvalidSortException ex, HttpServletRequest request) {
+        logger.warn("Invalid argument for {} : {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(DuplicateUserException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateUserException(DuplicateUserException ex, HttpServletRequest request) {
         logger.warn("Duplicate User at {} : {}", request.getRequestURI(), ex.getMessage());
