@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/tasks")
@@ -43,7 +45,7 @@ public class TaskController {
     public ResponseEntity<PagedResponseDTO<AllTasksResponseDTO>> findAllTasks(
             @RequestParam (defaultValue = "0") int page,
             @RequestParam (defaultValue = "5") int size,
-            @RequestParam (defaultValue = "createdAt,asc") List<String> sort) {
+            @RequestParam (defaultValue = "createdAt,asc") String sort) {
         Sort sortObject = parseSort(sort);
         Pageable pageable = PageRequest.of(page, size, sortObject);
         Page<AllTasksResponseDTO> pageResponse = taskService.findAllTasks(pageable);
@@ -56,15 +58,15 @@ public class TaskController {
         return new ResponseEntity<>(pagedResponseDTO, HttpStatus.OK);
     }
 
-    private Sort parseSort(List<String> sortParams) {
-        List<Sort.Order> orders = sortParams.stream().map(param ->
+    private Sort parseSort(String sortParams) {
+        String[] paramArray = sortParams.split(",");
+        if (paramArray.length == 0 || paramArray.length % 2 != 0) {
+            throw new InvalidSortException("Parameters required for sorting should be in valid format field, Example: createdAt, asc");
+        }
+        List<Sort.Order> orders = IntStream.range(0, paramArray.length/2).mapToObj(i ->
         {
-            String[] parts = param.split(",");
-            if(parts.length != 2) {
-                throw new InvalidSortException("Parameters required for sorting should be in valid format field, direction");
-            }
-            String field = parts[0].trim();
-            String direction = parts[1].trim().toLowerCase();
+            String field = paramArray[i*2].trim();
+            String direction = paramArray[i*2+1].trim().toLowerCase();
             if (!VALID_SORT_FIELDS.contains(field)) {
                 throw new InvalidSortException("Invalid Sort field: "+field+", Valid Sort fields are: "+VALID_SORT_FIELDS);
             }
