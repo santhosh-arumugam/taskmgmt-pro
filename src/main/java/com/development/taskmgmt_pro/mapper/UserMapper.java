@@ -14,12 +14,12 @@ public interface UserMapper {
     @Mapping(target = "userId", ignore = true)//To ignore user ID mapping from DTO to entity
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "fullName", source = "fullName")//To ignore createdAt mapping from DTO to entity
-    @Mapping(target = "jobRole", source = "jobRole", qualifiedByName = "stringToJobRole")
+    @Mapping(target = "jobRole", source = "jobRole", qualifiedByName = "stringToJobRoles")
     User toEntity(CreateUserDTO dto);
 
     UserResponseDTO toDto(User user);
 
-    @Named("stringToJobRole")
+    @Named("stringToJobRoles")
    default JobRole stringToJobRole(String jobRole) {
        return jobRole != null && !jobRole.isEmpty() ? JobRole.valueOf(jobRole) : null;
    }

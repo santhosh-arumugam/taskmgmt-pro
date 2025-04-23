@@ -1,8 +1,5 @@
 package com.development.taskmgmt_pro.controller;
-import com.development.taskmgmt_pro.dto.AllUsersResponseDTO;
-import com.development.taskmgmt_pro.dto.CreateUserDTO;
-import com.development.taskmgmt_pro.dto.PagedResponseDTO;
-import com.development.taskmgmt_pro.dto.UserResponseDTO;
+import com.development.taskmgmt_pro.dto.*;
 import com.development.taskmgmt_pro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,6 +39,12 @@ public class UserController {
                 usersPage.getSize(),
                 usersPage.getTotalElements(),
                 usersPage.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseByIdDTO> findById(@PathVariable Long userId) {
+        UserResponseByIdDTO response = userService.findUserById(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
