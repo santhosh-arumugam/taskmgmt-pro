@@ -1,9 +1,6 @@
 package com.development.taskmgmt_pro.controller;
 
-import com.development.taskmgmt_pro.dto.AllTasksResponseDTO;
-import com.development.taskmgmt_pro.dto.CreateTaskDTO;
-import com.development.taskmgmt_pro.dto.PagedResponseDTO;
-import com.development.taskmgmt_pro.dto.TaskResponseDTO;
+import com.development.taskmgmt_pro.dto.*;
 import com.development.taskmgmt_pro.exception.InvalidSortException;
 import com.development.taskmgmt_pro.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +73,11 @@ public class TaskController {
             return new Sort.Order(Sort.Direction.fromString(direction), field);
         } ).toList();
         return Sort.by(orders);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseByIdDTO> findById(@PathVariable Long id) {
+       TaskResponseByIdDTO response = taskService.findByTaskId(id);
+       return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

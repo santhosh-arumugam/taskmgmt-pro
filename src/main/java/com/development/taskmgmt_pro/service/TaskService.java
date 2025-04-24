@@ -2,6 +2,7 @@ package com.development.taskmgmt_pro.service;
 
 import com.development.taskmgmt_pro.dto.AllTasksResponseDTO;
 import com.development.taskmgmt_pro.dto.CreateTaskDTO;
+import com.development.taskmgmt_pro.dto.TaskResponseByIdDTO;
 import com.development.taskmgmt_pro.dto.TaskResponseDTO;
 import com.development.taskmgmt_pro.exception.DuplicateTaskException;
 import com.development.taskmgmt_pro.exception.ResourceNotFoundException;
@@ -14,10 +15,11 @@ import com.development.taskmgmt_pro.repository.TaskRepository;
 import com.development.taskmgmt_pro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -60,5 +62,12 @@ public class TaskService {
     public Page<AllTasksResponseDTO> findAllTasks(Pageable pageable) {
         Page<Task> pagedTasks = taskRepository.findAll(pageable);
         return pagedTasks.map(task -> new AllTasksResponseDTO(task.getTaskId(), task.getTitle(), task.getCreatedAt(), task.getPriority()));
+    }
+
+    @Transactional
+    public TaskResponseByIdDTO findByTaskId(Long taskId) {
+        Task fetchedTask = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task ID: "+taskId+" does not exists"));
+        return taskMapper.toTaskResponseDTO(fetchedTask);
     }
 }

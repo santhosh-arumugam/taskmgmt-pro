@@ -1,6 +1,7 @@
 package com.development.taskmgmt_pro.mapper;
 
 import com.development.taskmgmt_pro.dto.CreateTaskDTO;
+import com.development.taskmgmt_pro.dto.TaskResponseByIdDTO;
 import com.development.taskmgmt_pro.dto.TaskResponseDTO;
 import com.development.taskmgmt_pro.enums.TaskPriority;
 import com.development.taskmgmt_pro.enums.TaskStatus;
@@ -24,6 +25,8 @@ public interface TaskMapper {
     @Mapping(source = "project.projectId", target = "projectId")
     @Mapping(source = "user.userId", target = "userId")
     TaskResponseDTO toDto(Task task);
+
+    TaskResponseByIdDTO toTaskResponseDTO(Task task);
 
     @Named("stringToPriority")
     default TaskPriority stringToPriority(String priority) {
