@@ -1,9 +1,6 @@
 package com.development.taskmgmt_pro.controller;
 
-import com.development.taskmgmt_pro.dto.AllProjectsResponseDTO;
-import com.development.taskmgmt_pro.dto.CreateProjectDTO;
-import com.development.taskmgmt_pro.dto.PagedResponseDTO;
-import com.development.taskmgmt_pro.dto.ProjectResponseDTO;
+import com.development.taskmgmt_pro.dto.*;
 import com.development.taskmgmt_pro.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +37,12 @@ public class ProjectController {
                 pagedProjects.getSize(),
                 pagedProjects.getTotalElements(),
                 pagedProjects.getTotalPages());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjectResponseByIdDTO> findById(@PathVariable Long id) {
+        ProjectResponseByIdDTO response = projectService.findProjectById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -1,6 +1,7 @@
 package com.development.taskmgmt_pro.mapper;
 
 import com.development.taskmgmt_pro.dto.CreateUserDTO;
+import com.development.taskmgmt_pro.dto.UserResponseByIdDTO;
 import com.development.taskmgmt_pro.dto.UserResponseDTO;
 import com.development.taskmgmt_pro.enums.JobRole;
 import com.development.taskmgmt_pro.model.User;
@@ -18,6 +19,8 @@ public interface UserMapper {
     User toEntity(CreateUserDTO dto);
 
     UserResponseDTO toDto(User user);
+
+    UserResponseByIdDTO toUserResponseDTO(User user);
 
     @Named("stringToJobRoles")
    default JobRole stringToJobRole(String jobRole) {

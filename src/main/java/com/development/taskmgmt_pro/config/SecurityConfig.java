@@ -14,9 +14,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/tasks").permitAll()
-                        .requestMatchers("/projects").permitAll()
-                        .requestMatchers("/users").permitAll()// Allow POST /users
+                        .requestMatchers("/tasks/**").permitAll()
+                        .requestMatchers("/projects/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()// Allow POST /users
                         .anyRequest().authenticated()         // Other endpoints need auth
                 )
                 .csrf(csrf -> csrf.disable())

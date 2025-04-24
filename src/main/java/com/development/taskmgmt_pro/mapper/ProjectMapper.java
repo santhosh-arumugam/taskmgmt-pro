@@ -1,6 +1,7 @@
 package com.development.taskmgmt_pro.mapper;
 
 import com.development.taskmgmt_pro.dto.CreateProjectDTO;
+import com.development.taskmgmt_pro.dto.ProjectResponseByIdDTO;
 import com.development.taskmgmt_pro.dto.ProjectResponseDTO;
 import com.development.taskmgmt_pro.enums.ProjectStatus;
 import com.development.taskmgmt_pro.model.Project;
@@ -19,6 +20,8 @@ public interface ProjectMapper {
     Project toEntity(CreateProjectDTO dto);
 
     ProjectResponseDTO toDto(Project project);
+
+    ProjectResponseByIdDTO toProjectResponseDTO(Project project);
 
     @Named("stringToProjectStatus")
     default ProjectStatus stringToProjectStatus(String projectStatus) {
