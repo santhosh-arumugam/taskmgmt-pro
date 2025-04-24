@@ -70,4 +70,11 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task ID: "+taskId+" does not exists"));
         return taskMapper.toTaskResponseDTO(fetchedTask);
     }
+
+    @Transactional
+    public void deleteByTaskId(Long taskId) {
+        Task fetchedTask = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task ID: "+taskId+" does not exists"));
+        taskRepository.deleteById(taskId);
+    }
 }

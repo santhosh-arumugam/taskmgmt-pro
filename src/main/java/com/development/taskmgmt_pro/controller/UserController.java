@@ -47,4 +47,11 @@ public class UserController {
         UserResponseByIdDTO response = userService.findUserById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteByUserId(@PathVariable Long id) {
+        System.out.println("Request received to delete User details for User ID: "+id);
+        userService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

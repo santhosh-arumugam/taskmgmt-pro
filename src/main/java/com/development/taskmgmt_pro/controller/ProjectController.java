@@ -45,4 +45,11 @@ public class ProjectController {
         ProjectResponseByIdDTO response = projectService.findProjectById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteByProjectId(@PathVariable Long id) {
+        System.out.println("Request received to delete the Project details for Project ID :"+id);
+        projectService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

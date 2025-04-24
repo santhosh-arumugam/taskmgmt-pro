@@ -80,4 +80,11 @@ public class TaskController {
        TaskResponseByIdDTO response = taskService.findByTaskId(id);
        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        System.out.println("Request received to delete the Task details for Task ID: "+id);
+        taskService.deleteByTaskId(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

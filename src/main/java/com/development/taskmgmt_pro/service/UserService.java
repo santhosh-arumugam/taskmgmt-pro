@@ -50,4 +50,11 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User ID: "+userId+" does not exists"));
         return userMapper.toUserResponseDTO(fetchedUser);
     }
+
+    @Transactional
+    public void deleteById(Long userId) {
+        User getUser = userRepository.findById(userId)
+                .orElseThrow(()-> new ResourceNotFoundException("User ID: "+userId+" does not exists"));
+        userRepository.deleteById(userId);
+    }
 }
