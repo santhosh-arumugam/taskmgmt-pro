@@ -77,4 +77,12 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task ID: "+taskId+" does not exists"));
         taskRepository.deleteById(taskId);
     }
+
+    @Transactional
+    public TaskResponseByIdDTO updateById(Long taskId, CreateTaskDTO dto) {
+        Task getTask = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task ID: "+taskId+" does not exists for update"));
+        Task updatedTask = taskRepository.save(taskMapper.toUpdateEntity(dto, getTask));
+        return taskMapper.toTaskResponseDTO(updatedTask);
+    }
 }

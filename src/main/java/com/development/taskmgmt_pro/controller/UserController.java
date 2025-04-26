@@ -54,4 +54,10 @@ public class UserController {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseByIdDTO> updateById(@PathVariable Long id, @Valid @RequestBody CreateUserDTO dto) {
+        UserResponseByIdDTO response = userService.updateUserById(id, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

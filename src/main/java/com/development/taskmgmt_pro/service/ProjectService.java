@@ -54,4 +54,12 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project ID: "+projectId+" does not exists"));
         projectRepository.deleteById(projectId);
     }
+
+    @Transactional
+    public ProjectResponseByIdDTO updateById(Long projectId, CreateProjectDTO dto) {
+        Project getProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project ID: "+projectId+" does not exists to update"));
+        Project updatedProject = projectRepository.save(projectMapper.toUpdateEntity(dto, getProject));
+        return projectMapper.toProjectResponseDTO(updatedProject);
+    }
 }

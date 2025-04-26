@@ -7,6 +7,7 @@ import com.development.taskmgmt_pro.enums.JobRole;
 import com.development.taskmgmt_pro.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
@@ -14,9 +15,11 @@ public interface UserMapper {
 
     @Mapping(target = "userId", ignore = true)//To ignore user ID mapping from DTO to entity
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "fullName", source = "fullName")//To ignore createdAt mapping from DTO to entity
+    @Mapping(target = "fullName", source = "fullName")
     @Mapping(target = "jobRole", source = "jobRole", qualifiedByName = "stringToJobRoles")
     User toEntity(CreateUserDTO dto);
+
+    User toUpdateEntity(CreateUserDTO dto, @MappingTarget User user);
 
     UserResponseDTO toDto(User user);
 

@@ -52,4 +52,10 @@ public class ProjectController {
         projectService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectResponseByIdDTO> updateById(@PathVariable Long id, @Valid @RequestBody CreateProjectDTO dto) {
+        ProjectResponseByIdDTO response = projectService.updateById(id, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

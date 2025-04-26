@@ -57,4 +57,12 @@ public class UserService {
                 .orElseThrow(()-> new ResourceNotFoundException("User ID: "+userId+" does not exists"));
         userRepository.deleteById(userId);
     }
+
+    @Transactional
+    public UserResponseByIdDTO updateUserById(Long userId, CreateUserDTO dto) {
+        User getUser = userRepository.findById(userId)
+                .orElseThrow(()-> new ResourceNotFoundException("User ID: "+userId+" does not exist for any update"));
+        User updatedUser = userRepository.save(userMapper.toUpdateEntity(dto, getUser));
+        return userMapper.toUserResponseDTO(updatedUser);
+    }
 }

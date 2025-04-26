@@ -1,5 +1,6 @@
 package com.development.taskmgmt_pro.mapper;
 
+import com.development.taskmgmt_pro.dto.CreateProjectDTO;
 import com.development.taskmgmt_pro.dto.CreateTaskDTO;
 import com.development.taskmgmt_pro.dto.TaskResponseByIdDTO;
 import com.development.taskmgmt_pro.dto.TaskResponseDTO;
@@ -8,6 +9,7 @@ import com.development.taskmgmt_pro.enums.TaskStatus;
 import com.development.taskmgmt_pro.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
@@ -25,6 +27,8 @@ public interface TaskMapper {
     @Mapping(source = "project.projectId", target = "projectId")
     @Mapping(source = "user.userId", target = "userId")
     TaskResponseDTO toDto(Task task);
+
+    Task toUpdateEntity(CreateTaskDTO dto, @MappingTarget Task task);
 
     TaskResponseByIdDTO toTaskResponseDTO(Task task);
 

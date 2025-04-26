@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDate;
 
 @Entity
@@ -46,4 +45,8 @@ public class Task {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 }

@@ -7,6 +7,7 @@ import com.development.taskmgmt_pro.enums.ProjectStatus;
 import com.development.taskmgmt_pro.model.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
@@ -18,6 +19,8 @@ public interface ProjectMapper {
     @Mapping(target = "endDate", source = "endDate")
     @Mapping(target = "projectStatus", source = "projectStatus", qualifiedByName = "stringToProjectStatus")
     Project toEntity(CreateProjectDTO dto);
+
+    Project toUpdateEntity(CreateProjectDTO dto, @MappingTarget Project project);
 
     ProjectResponseDTO toDto(Project project);
 

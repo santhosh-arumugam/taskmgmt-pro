@@ -87,4 +87,10 @@ public class TaskController {
         taskService.deleteByTaskId(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponseByIdDTO> updateById(@PathVariable Long id, @Valid @RequestBody CreateTaskDTO dto) {
+        TaskResponseByIdDTO response = taskService.updateById(id, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
