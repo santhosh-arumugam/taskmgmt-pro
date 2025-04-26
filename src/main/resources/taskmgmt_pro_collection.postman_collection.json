@@ -173,7 +173,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/39",
+							"raw": "http://localhost:8080/users/38",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -181,7 +181,7 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"39"
+								"38"
 							]
 						}
 					},
@@ -202,6 +202,41 @@
 							"path": [
 								"users",
 								"28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"Santhosh_Meta02\",\r\n    \"fullName\": \"Santhosh Kumar Arumugam\",\r\n    \"emailId\": \"santhosh@metawearcloud.com\",\r\n    \"jobRole\": \"MANAGER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/37",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"37"
 							]
 						}
 					},
@@ -474,6 +509,41 @@
 					"response": []
 				},
 				{
+					"name": "updateTask",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"EBay Channel-Products\",\r\n    \"projectId\": \"36\",\r\n    \"userId\": \"74\",\r\n    \"description\": \"Adding EBay Channel Products\",\r\n    \"priority\": \"LOW\",\r\n    \"status\": \"IN_PROGRESS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tasks/20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tasks",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "deleteById",
 					"request": {
 						"method": "DELETE",
@@ -567,6 +637,44 @@
 							"port": "8080",
 							"path": [
 								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProject",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"projectName\": \"API for Channels\",\r\n    \"projectStatus\": \"ACTIVE\",\r\n    \"description\": \"Adding APIs for all channels\",\r\n    \"startDate\": \"2025-03-10\",\r\n    \"endDate\": \"2025-05-25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/projects/33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"projects",
+								"33"
 							]
 						}
 					},
