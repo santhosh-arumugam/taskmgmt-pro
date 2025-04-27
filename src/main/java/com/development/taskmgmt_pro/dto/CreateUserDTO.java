@@ -24,4 +24,6 @@ public class CreateUserDTO {
 
     @Pattern(regexp = "^(MANAGER|DEVELOPER|PRODUCT_OWNER|TESTER)?$", message = "Job role must be MANAGER, DEVELOPER, PRODUCT_OWNER, TESTER  or null")
     private String jobRole;
+
+    private String password;
 }

@@ -9,19 +9,24 @@ import com.development.taskmgmt_pro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -34,7 +39,11 @@ public class UserService {
         if (userRepository.findByEmailId(dto.getEmailId()).isPresent()) {
             throw new DuplicateUserException("User email ID already exists");
         }
-        User savedUser = userRepository.save(userMapper.toEntity(dto));
+
+        User user = userMapper.toEntity(dto);
+        user.setPassword(passwordEncoder.encode(dto.getPassword() != null ? dto.getPassword() : "DefaultPassword123"));
+        user.setRoles(Set.of("ROLE_"+dto.getJobRole()));
+        User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
 

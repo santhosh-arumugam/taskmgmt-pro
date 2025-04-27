@@ -15,7 +15,9 @@ public interface UserMapper {
 
     @Mapping(target = "userId", ignore = true)//To ignore user ID mapping from DTO to entity
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "fullName", source = "fullName")
+    @Mapping(target = "password", source = "password")
     @Mapping(target = "jobRole", source = "jobRole", qualifiedByName = "stringToJobRoles")
     User toEntity(CreateUserDTO dto);
 
