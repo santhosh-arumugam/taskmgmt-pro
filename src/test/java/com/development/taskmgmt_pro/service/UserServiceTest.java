@@ -14,11 +14,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -99,5 +103,65 @@ public class UserServiceTest {
         verify(passwordEncoder).encode("Password123");
         verify(userRepository).save(any());
     }
-    
+
+    @Test
+    void findAllUsers_success_pagedAllUsersResponseDTO() {
+        Page<User> userPage = new PageImpl<>(List.of(user));
+        when(userRepository.findAll(pageable)).thenReturn(userPage);
+
+        Page<AllUsersResponseDTO> result = userService.findAllUsers(pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalPages());
+        assertEquals(1, result.getTotalElements());
+        assertEquals(15L, result.getContent().getFirst().getUserId());
+        assertEquals("Santhosh_Kumar", result.getContent().getFirst().getUserName());
+        verify(userRepository).findAll(pageable);
+    }
+
+    @Test
+    void findByUserId_existingId_returnUserResponseByIdDTO() {
+        when(userRepository.findById(15L)).thenReturn(Optional.of(user));
+        when(userMapper.toUserResponseDTO(user)).thenReturn(userResponseByIdDTO);
+
+        UserResponseByIdDTO result = userService.findUserById(15L);
+
+        assertNotNull(result);
+        assertEquals(15L, result.getUserId());
+        assertEquals("Santhosh_Kumar", result.getUserName());
+        assertEquals("Santhosh Kumar", result.getFullName());
+        assertEquals("santhosh@gmail.com", result.getEmailId());
+        assertEquals(JobRole.DEVELOPER, result.getJobRole());
+        assertEquals(LocalDate.of(2025,4,29), result.getCreatedAt());
+        verify(userRepository).findById(15L);
+    }
+
+    @Test
+    void deleteById_existingId() {
+        when(userRepository.findById(15L)).thenReturn(Optional.of(user));
+
+        userService.deleteById(15L);
+
+        verify(userRepository).findById(15L);
+        verify(userRepository).deleteById(15L);
+    }
+
+    @Test
+    void updateUserById_success_returnUserResponseByIdDTO() {
+        when(userRepository.findById(15L)).thenReturn(Optional.of(user));
+        when(userMapper.toUpdateEntity(createUserDTO, user)).thenReturn(user);
+        when(userRepository.save(any())).thenReturn(user);
+        when(userMapper.toUserResponseDTO(user)).thenReturn(userResponseByIdDTO);
+
+        UserResponseByIdDTO result = userService.updateUserById(15L, createUserDTO);
+
+        assertNotNull(result);
+        assertEquals(15L, result.getUserId());
+        assertEquals("Santhosh_Kumar", result.getUserName());
+        assertEquals("Santhosh Kumar", result.getFullName());
+        assertEquals("santhosh@gmail.com", result.getEmailId());
+        assertEquals(JobRole.DEVELOPER, result.getJobRole());
+        assertEquals(LocalDate.of(2025,4,29), result.getCreatedAt());
+        verify(userRepository).save(user);
+    }
 }
