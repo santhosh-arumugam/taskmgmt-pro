@@ -44,6 +44,8 @@ taskmgmt-pro/
 ├── application.properties # Configuration
 └── README.md
 ```
+## Database Schema
+![Taskmgmt-pro ER Diagram](docs/taskmgmt-pro-erd.png)
 
 ## Setup Instructions
 1. **Clone the Repository**:
